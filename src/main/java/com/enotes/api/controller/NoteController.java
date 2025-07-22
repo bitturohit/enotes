@@ -23,11 +23,6 @@ public class NoteController
 {
 	private final NoteService noteService;
 
-	// POST /api/notes with JSON body:
-	// {
-	// "title": "Spring Boot",
-	// "content": "Build enotes project step by step"
-	// }
 	@PostMapping
 	public ResponseEntity<NoteResponseDto> createNote(
 			@Valid @RequestBody NoteRequestDto noteDto)
@@ -35,7 +30,6 @@ public class NoteController
 		return ResponseEntity.ok(noteService.createNote(noteDto));
 	}
 
-	// GET /api/notes
 	@GetMapping
 	public ResponseEntity<List<NoteResponseDto>> findAllNotes()
 	{

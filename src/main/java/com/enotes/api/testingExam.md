@@ -1,0 +1,16 @@
+# POST /api/notes with JSON body:
+{
+	"title": "Spring Boot",
+	"content": "Build enotes project step by step"
+}
+
+
+# GET /api/notes
+
+
+# Example on Validation Error
+POST localhost:8080/api/notes
+{
+  "title": "",
+  "content": ""
+}
