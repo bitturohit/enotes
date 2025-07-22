@@ -14,3 +14,6 @@ POST localhost:8080/api/notes
   "title": "",
   "content": ""
 }
+
+# Page 
+GET /api/notes/paginated?page=1&size=3
