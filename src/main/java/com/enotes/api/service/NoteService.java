@@ -13,4 +13,10 @@ public interface NoteService
 	List<NoteResponseDto> getAllNotes();
 
 	PageResponse<NoteResponseDto> getNotesPages(int page, int size);
+
+	NoteResponseDto archiveNote(Long id);
+
+	NoteResponseDto unArchiveNote(Long id);
+
+	List<NoteResponseDto> getAllArchivednotes();
 }

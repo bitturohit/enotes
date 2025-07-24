@@ -33,7 +33,10 @@ public class NoteServiceImpl implements NoteService
 	@Override
 	public List<NoteResponseDto> getAllNotes()
 	{
-		return noteRepository.findAll().stream().map(NoteMapper::toResponse).toList();
+		return noteRepository.findAllByIsArchivedFalse()
+				.stream()
+				.map(NoteMapper::toResponse)
+				.toList();
 	}
 
 	@Override
@@ -41,10 +44,40 @@ public class NoteServiceImpl implements NoteService
 	{
 		Pageable pageable = PageRequest.of(page, size);
 
-		Page<Note> notePage = noteRepository.findAll(pageable);
+		Page<Note> notePage = noteRepository.findAllByIsArchivedFalse(pageable);
 		Page<NoteResponseDto> dtoPage = notePage.map(NoteMapper::toResponse);
 
 		return PageResponse.of(dtoPage);
+	}
+
+	@Override
+	public NoteResponseDto archiveNote(Long id)
+	{
+		Note note = noteRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Note not found"));
+		note.setArchived(true);
+		Note updated = noteRepository.save(note);
+
+		return NoteMapper.toResponse(updated);
+	}
+
+	@Override
+	public NoteResponseDto unArchiveNote(Long id)
+	{
+		Note note = noteRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Note not found"));
+		note.setArchived(false);
+		Note updated = noteRepository.save(note);
+
+		return NoteMapper.toResponse(updated);
+	}
+
+	@Override
+	public List<NoteResponseDto> getAllArchivednotes()
+	{
+		List<Note> notes = noteRepository.findAllByIsArchivedTrue();
+
+		return notes.stream().map(NoteMapper::toResponse).toList();
 	}
 
 }

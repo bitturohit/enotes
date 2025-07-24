@@ -38,6 +38,8 @@ public class Note
 
 	private LocalDateTime updatedAt;
 
+	private boolean isArchived = false;
+
 	@PrePersist
 	protected void onCreate()
 	{

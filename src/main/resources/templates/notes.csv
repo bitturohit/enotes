@@ -1,0 +1,11 @@
+title,content
+Spring Boot Basics,Introduction to Spring Boot and its annotations.
+REST API Design,Best practices for designing RESTful services.
+DTO vs Entity,Why DTOs are important in layered architecture.
+Pagination in Spring,Implementing pagination with PageRequest.
+Error Handling,Using @ControllerAdvice for global exceptions.
+MapStruct Intro,Mapping entities to DTOs with MapStruct.
+Spring Data JPA,Working with repositories and query methods.
+Validation,Using @Valid and custom constraints.
+Lombok Tips,Reducing boilerplate with Lombok annotations.
+Testing Services,Unit testing service layer with Mockito.
