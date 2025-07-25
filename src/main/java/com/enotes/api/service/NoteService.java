@@ -19,4 +19,6 @@ public interface NoteService
 	NoteResponseDto unArchiveNote(Long id);
 
 	List<NoteResponseDto> getAllArchivednotes();
+
+	NoteResponseDto updateNote(Long id, NoteRequestDto requestDto);
 }

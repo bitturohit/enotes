@@ -24,3 +24,13 @@ PUT localhost:8080/api/notes/8/archive
 PUT localhost:8080/api/notes/8/unarchive
 
 GET localhost:8080/api/notes/archived
+
+# update note
+PUT /api/notes/5
+
+{
+  "title": "Updated title",
+  "content": "Updated content"
+}
+
+PUT /api/notes/999

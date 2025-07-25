@@ -78,4 +78,15 @@ public class NoteController
 		return ResponseEntity
 				.ok(ApiResponse.success(archivedNotes, "Archived notes fetched"));
 	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<ApiResponse<NoteResponseDto>> updateNote(
+			@PathVariable Long id,
+			@RequestBody @Valid NoteRequestDto noteDto)
+	{
+		NoteResponseDto response = noteService.updateNote(id, noteDto);
+
+		return ResponseEntity
+				.ok(ApiResponse.success(response, "Note updated successfully"));
+	}
 }

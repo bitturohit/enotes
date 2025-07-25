@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.enotes.api.dto.NoteRequestDto;
 import com.enotes.api.dto.NoteResponseDto;
 import com.enotes.api.dto.PageResponse;
+import com.enotes.api.exception.ResourceNotFoundException;
 import com.enotes.api.mapper.NoteMapper;
 import com.enotes.api.model.Note;
 import com.enotes.api.repository.NoteRepository;
@@ -78,6 +79,25 @@ public class NoteServiceImpl implements NoteService
 		List<Note> notes = noteRepository.findAllByIsArchivedTrue();
 
 		return notes.stream().map(NoteMapper::toResponse).toList();
+	}
+
+	@Override
+	public NoteResponseDto updateNote(Long id, NoteRequestDto requestDto)
+	{
+		Note note = noteRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(
+						"Note not found with id " + id));
+		if (note.isArchived())
+		{
+			throw new IllegalStateException("Can't update an archived note");
+		}
+
+		note.setTitle(requestDto.getTitle());
+		note.setContent(requestDto.getContent());
+
+		Note updated = noteRepository.save(note);
+
+		return NoteMapper.toResponse(updated);
 	}
 
 }
