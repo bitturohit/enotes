@@ -21,4 +21,6 @@ public interface NoteService
 	List<NoteResponseDto> getAllArchivednotes();
 
 	NoteResponseDto updateNote(Long id, NoteRequestDto requestDto);
+
+	void deleteNote(Long id);
 }

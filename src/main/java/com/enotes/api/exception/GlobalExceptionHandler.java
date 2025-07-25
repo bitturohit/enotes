@@ -35,20 +35,21 @@ public class GlobalExceptionHandler
 		return ResponseEntity.badRequest().body(response);
 	}
 
-	// Catch-all handler
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ErrorResponse> handleOtherexceptions(Exception ex)
+	// Handle illegal business logic (like editing archived notes)
+	@ExceptionHandler(IllegalStateException.class)
+	public ResponseEntity<ErrorResponse> handleIllegalState(IllegalStateException ex)
 	{
 		ErrorResponse response = ErrorResponse.builder()
 				.message(ex.getMessage())
-				.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+				.status(HttpStatus.BAD_REQUEST.value())
 				.timestamp(LocalDateTime.now())
-				.errors(List.of("Unexpected error occured"))
+				.errors(List.of("Illegal operation"))
 				.build();
 
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		return ResponseEntity.badRequest().body(response);
 	}
 
+	// Handle custom 404 errors
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<ErrorResponse> handleResourceNotFound(
 			ResourceNotFoundException ex)
@@ -61,5 +62,19 @@ public class GlobalExceptionHandler
 				.build();
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	}
+
+	// Catch-all handler
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorResponse> handleOtherexceptions(Exception ex)
+	{
+		ErrorResponse response = ErrorResponse.builder()
+				.message(ex.getMessage())
+				.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+				.timestamp(LocalDateTime.now())
+				.errors(List.of("Unexpected error occured"))
+				.build();
+
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	}
 }

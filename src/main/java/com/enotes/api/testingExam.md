@@ -34,3 +34,14 @@ PUT /api/notes/5
 }
 
 PUT /api/notes/999
+
+# delete note
+DELETE /api/notes/8
+
+DELETE /api/notes/{invalid_id}
+
+DELETE /api/notes/{archieved_id}
+
+
+
+

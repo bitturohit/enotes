@@ -100,4 +100,20 @@ public class NoteServiceImpl implements NoteService
 		return NoteMapper.toResponse(updated);
 	}
 
+	@Override
+	public void deleteNote(Long id)
+	{
+		Note note = noteRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(
+						"Note not found with id " + id));
+
+		if (note.isArchived())
+		{
+			throw new IllegalStateException(
+					"Archived note cannot be deleted. Please unarchive it first.");
+		}
+
+		noteRepository.delete(note);
+	}
+
 }
