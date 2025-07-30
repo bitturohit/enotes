@@ -1,7 +1,6 @@
-package com.enotes.api.dto;
+package com.enotes.api.dto.note;
 
-import java.time.LocalDateTime;
-
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,10 +12,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NoteResponseDto
+public class NoteRequestDto
 {
-	private long id;
+	@NotBlank(message = "Title is required")
 	private String title;
+
+	@NotBlank(message = "Message is required")
 	private String content;
-	private LocalDateTime createdAt;
 }

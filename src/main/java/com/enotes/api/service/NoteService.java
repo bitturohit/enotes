@@ -2,9 +2,9 @@ package com.enotes.api.service;
 
 import java.util.List;
 
-import com.enotes.api.dto.NoteRequestDto;
-import com.enotes.api.dto.NoteResponseDto;
-import com.enotes.api.dto.PageResponse;
+import com.enotes.api.dto.common.PageResponse;
+import com.enotes.api.dto.note.NoteRequestDto;
+import com.enotes.api.dto.note.NoteResponseDto;
 
 public interface NoteService
 {

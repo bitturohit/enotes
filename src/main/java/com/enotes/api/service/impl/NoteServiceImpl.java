@@ -7,9 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.enotes.api.dto.NoteRequestDto;
-import com.enotes.api.dto.NoteResponseDto;
-import com.enotes.api.dto.PageResponse;
+import com.enotes.api.dto.common.PageResponse;
+import com.enotes.api.dto.note.NoteRequestDto;
+import com.enotes.api.dto.note.NoteResponseDto;
 import com.enotes.api.exception.ResourceNotFoundException;
 import com.enotes.api.mapper.NoteMapper;
 import com.enotes.api.model.Note;

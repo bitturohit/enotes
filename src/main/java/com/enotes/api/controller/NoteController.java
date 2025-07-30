@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.enotes.api.dto.ApiResponse;
-import com.enotes.api.dto.NoteRequestDto;
-import com.enotes.api.dto.NoteResponseDto;
-import com.enotes.api.dto.PageResponse;
+import com.enotes.api.dto.common.ApiResponse;
+import com.enotes.api.dto.common.PageResponse;
+import com.enotes.api.dto.note.NoteRequestDto;
+import com.enotes.api.dto.note.NoteResponseDto;
 import com.enotes.api.service.NoteService;
 
 import jakarta.validation.Valid;

@@ -42,6 +42,23 @@ DELETE /api/notes/{invalid_id}
 
 DELETE /api/notes/{archieved_id}
 
+# register user
+POST localhost:8080/api/auth/register
+{
+  "fullName": "Rohit Das",
+  "email": "rohit@example.com",
+  "password": "test1234"
+}
 
+# login
+POST localhost:8080/api/auth/login
 
+{
+  "email": "rohit@example.com",
+  "password": "test1234"
+}
 
+# header
+
+GET localhost:8080/api/notes
+Authorization Bearer token

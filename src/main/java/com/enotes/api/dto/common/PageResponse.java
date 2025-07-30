@@ -1,4 +1,4 @@
-package com.enotes.api.dto;
+package com.enotes.api.dto.common;
 
 import java.util.List;
 

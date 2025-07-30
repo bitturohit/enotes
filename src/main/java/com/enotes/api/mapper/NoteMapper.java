@@ -1,7 +1,7 @@
 package com.enotes.api.mapper;
 
-import com.enotes.api.dto.NoteRequestDto;
-import com.enotes.api.dto.NoteResponseDto;
+import com.enotes.api.dto.note.NoteRequestDto;
+import com.enotes.api.dto.note.NoteResponseDto;
 import com.enotes.api.model.Note;
 
 public class NoteMapper
