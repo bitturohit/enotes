@@ -162,4 +162,23 @@ public class NoteServiceImpl implements NoteService
 		return notes.stream().map(NoteMapper::toResponse).toList();
 	}
 
+	// Restore Soft-Deleted Notes
+	@Override
+	public NoteResponseDto restoreDeletedNote(Long id)
+	{
+		User currentUser = authService.getCurrentUser();
+		Note note = noteRepository.findByIdAndUser(id, currentUser)
+				.orElseThrow(() -> new ResourceNotFoundException("Note", "id", id));
+
+		if (!note.isDeleted())
+		{
+			throw new IllegalStateException("Note is not deleted");
+		}
+
+		note.setDeleted(false);
+		Note updated = noteRepository.save(note);
+
+		return NoteMapper.toResponse(updated);
+	}
+
 }

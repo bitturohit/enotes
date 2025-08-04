@@ -79,3 +79,12 @@ Authorization Bearer token
 | `PUT`    | `/api/notes/{id}/unarchive` | Unarchive note           |
 | `GET`    | `/api/notes/archived`       | Archived notes           |
 
+# Restore soft deleted note
+Soft delete a note:
+DELETE /api/notes/{id}
+
+Restore it:
+PUT /api/notes/{id}/restore
+
+Check list again:
+GET /api/notes

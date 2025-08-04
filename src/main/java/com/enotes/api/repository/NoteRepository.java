@@ -22,6 +22,8 @@ public interface NoteRepository extends JpaRepository<Note, Long>
 
 	List<Note> findByUser(User user);
 
+	Optional<Note> findByIdAndUser(long noteId, User user);
+
 //	List<Note> findByUserAndIsArchivedFalse(User user);
 
 	List<Note> findByUserAndIsArchivedFalseAndDeletedFalse(User user);
@@ -33,8 +35,6 @@ public interface NoteRepository extends JpaRepository<Note, Long>
 	List<Note> findByUserAndDeletedFalse(User user);
 
 	List<Note> findByUserAndDeletedTrue(User user);
-
-	Optional<Note> findByIdAndUser(long noteId, User user);
 
 	Optional<Note> findByIdAndUserAndDeletedFalse(long id, User user);
 }

@@ -113,7 +113,17 @@ public class NoteController
 	public ResponseEntity<ApiResponse<List<NoteResponseDto>>> getDeletedNotes()
 	{
 		List<NoteResponseDto> deletedNotes = noteService.getDeletedNotes();
+
 		return ResponseEntity
 				.ok(ApiResponse.success(deletedNotes, "Deleted notes fetched"));
+	}
+
+	@PutMapping("/{id}/restore")
+	public ResponseEntity<ApiResponse<NoteResponseDto>> restoreNote(@PathVariable Long id)
+	{
+		NoteResponseDto response = noteService.restoreDeletedNote(id);
+
+		return ResponseEntity
+				.ok(ApiResponse.success(response, "Note restored successfully"));
 	}
 }
