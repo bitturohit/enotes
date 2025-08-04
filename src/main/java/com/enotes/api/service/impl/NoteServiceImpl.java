@@ -56,7 +56,8 @@ public class NoteServiceImpl implements NoteService
 	{
 		User currentUser = authService.getCurrentUser();
 
-		List<Note> notes = noteRepository.findByUserAndIsArchivedFalse(currentUser);
+		List<Note> notes = noteRepository
+				.findByUserAndIsArchivedFalseAndDeletedFalse(currentUser);
 
 		return notes.stream().map(NoteMapper::toResponse).toList();
 	}
@@ -101,7 +102,8 @@ public class NoteServiceImpl implements NoteService
 	@Override
 	public List<NoteResponseDto> getAllArchivednotes()
 	{
-		List<Note> notes = noteRepository.findAllByIsArchivedTrue();
+		User currentUser = authService.getCurrentUser();
+		List<Note> notes = noteRepository.findByUserAndIsArchivedTrue(currentUser);
 
 		return notes.stream().map(NoteMapper::toResponse).toList();
 	}
@@ -137,7 +139,8 @@ public class NoteServiceImpl implements NoteService
 					"Archived note cannot be deleted. Please unarchive it first.");
 		}
 
-		noteRepository.delete(note);
+		note.setDeleted(true);
+		noteRepository.save(note);
 	}
 
 	@Override
@@ -147,6 +150,16 @@ public class NoteServiceImpl implements NoteService
 		Note note = getNoteIfOwned(noteId, currentUser);
 
 		return NoteMapper.toResponse(note);
+	}
+
+	// Show Soft-Deleted Notes
+	@Override
+	public List<NoteResponseDto> getDeletedNotes()
+	{
+		User currentUser = authService.getCurrentUser();
+		List<Note> notes = noteRepository.findByUserAndDeletedTrue(currentUser);
+
+		return notes.stream().map(NoteMapper::toResponse).toList();
 	}
 
 }

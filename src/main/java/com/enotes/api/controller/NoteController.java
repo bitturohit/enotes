@@ -108,4 +108,12 @@ public class NoteController
 		return ResponseEntity.ok(ApiResponse.success(response,
 				"Note with id " + id + " fetched sucessfully"));
 	}
+
+	@GetMapping("/deleted")
+	public ResponseEntity<ApiResponse<List<NoteResponseDto>>> getDeletedNotes()
+	{
+		List<NoteResponseDto> deletedNotes = noteService.getDeletedNotes();
+		return ResponseEntity
+				.ok(ApiResponse.success(deletedNotes, "Deleted notes fetched"));
+	}
 }

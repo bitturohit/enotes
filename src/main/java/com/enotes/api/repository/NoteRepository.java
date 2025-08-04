@@ -22,13 +22,17 @@ public interface NoteRepository extends JpaRepository<Note, Long>
 
 	List<Note> findByUser(User user);
 
-	List<Note> findByUserAndIsArchivedFalse(User user);
+//	List<Note> findByUserAndIsArchivedFalse(User user);
+
+	List<Note> findByUserAndIsArchivedFalseAndDeletedFalse(User user);
 
 	Page<Note> findByUserAndIsArchivedFalse(User user, Pageable pageable);
 
 	List<Note> findByUserAndIsArchivedTrue(User user);
 
 	List<Note> findByUserAndDeletedFalse(User user);
+
+	List<Note> findByUserAndDeletedTrue(User user);
 
 	Optional<Note> findByIdAndUser(long noteId, User user);
 
