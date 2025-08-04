@@ -29,4 +29,6 @@ public interface NoteService
 	List<NoteResponseDto> getDeletedNotes();
 
 	NoteResponseDto restoreDeletedNote(Long id);
+
+	void permanentlyDeleteNote(Long id);
 }

@@ -128,6 +128,15 @@ public class NoteServiceImpl implements NoteService
 	}
 
 	@Override
+	public NoteResponseDto getNoteById(Long noteId)
+	{
+		User currentUser = authService.getCurrentUser();
+		Note note = getNoteIfOwned(noteId, currentUser);
+
+		return NoteMapper.toResponse(note);
+	}
+
+	@Override
 	public void deleteNote(Long id)
 	{
 		User currentUser = authService.getCurrentUser();
@@ -141,15 +150,6 @@ public class NoteServiceImpl implements NoteService
 
 		note.setDeleted(true);
 		noteRepository.save(note);
-	}
-
-	@Override
-	public NoteResponseDto getNoteById(Long noteId)
-	{
-		User currentUser = authService.getCurrentUser();
-		Note note = getNoteIfOwned(noteId, currentUser);
-
-		return NoteMapper.toResponse(note);
 	}
 
 	// Show Soft-Deleted Notes
@@ -179,6 +179,21 @@ public class NoteServiceImpl implements NoteService
 		Note updated = noteRepository.save(note);
 
 		return NoteMapper.toResponse(updated);
+	}
+
+	@Override
+	public void permanentlyDeleteNote(Long id)
+	{
+		User currentUser = authService.getCurrentUser();
+		Note note = noteRepository.findByIdAndUser(id, currentUser)
+				.orElseThrow(() -> new ResourceNotFoundException("Note", "id", id));
+
+		if (!note.isDeleted())
+		{
+			throw new IllegalStateException("Note is not marked deleted");
+		}
+
+		noteRepository.delete(note);
 	}
 
 }

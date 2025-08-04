@@ -92,14 +92,6 @@ public class NoteController
 				.ok(ApiResponse.success(response, "Note updated successfully"));
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<ApiResponse<String>> deleteNote(@PathVariable Long id)
-	{
-		noteService.deleteNote(id);
-
-		return ResponseEntity.ok(ApiResponse.success(null, "Note deleted successfully"));
-	}
-
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse<NoteResponseDto>> getNoteById(@PathVariable Long id)
 	{
@@ -125,5 +117,20 @@ public class NoteController
 
 		return ResponseEntity
 				.ok(ApiResponse.success(response, "Note restored successfully"));
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<ApiResponse<String>> deleteNote(@PathVariable Long id)
+	{
+		noteService.deleteNote(id);
+
+		return ResponseEntity.ok(ApiResponse.success(null, "Note deleted successfully"));
+	}
+
+	@DeleteMapping("/{id}/permanent")
+	public ResponseEntity<ApiResponse<String>> permanentlyDelete(@PathVariable Long id)
+	{
+		noteService.permanentlyDeleteNote(id);
+		return ResponseEntity.ok(ApiResponse.success(null, "Note permannetly deleted"));
 	}
 }

@@ -88,3 +88,12 @@ PUT /api/notes/{id}/restore
 
 Check list again:
 GET /api/notes
+
+# Permanently delete a note
+Soft delete a note:
+DELETE /api/notes/{id}
+
+Permanently delete it:
+DELETE /api/notes/{id}/permanent
+
+Check the DB: that note should be gone from the table.
