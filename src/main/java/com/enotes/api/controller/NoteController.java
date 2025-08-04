@@ -34,6 +34,7 @@ public class NoteController
 			@Valid @RequestBody NoteRequestDto noteDto)
 	{
 		NoteResponseDto response = noteService.createNote(noteDto);
+
 		return ResponseEntity
 				.ok(ApiResponse.success(response, "Note created succesfully"));
 	}
@@ -97,5 +98,14 @@ public class NoteController
 		noteService.deleteNote(id);
 
 		return ResponseEntity.ok(ApiResponse.success(null, "Note deleted successfully"));
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<ApiResponse<NoteResponseDto>> getNoteById(@PathVariable Long id)
+	{
+		NoteResponseDto response = noteService.getNoteById(id);
+
+		return ResponseEntity.ok(ApiResponse.success(response,
+				"Note with id " + id + " fetched sucessfully"));
 	}
 }

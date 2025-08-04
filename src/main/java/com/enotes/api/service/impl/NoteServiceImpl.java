@@ -13,7 +13,10 @@ import com.enotes.api.dto.note.NoteResponseDto;
 import com.enotes.api.exception.ResourceNotFoundException;
 import com.enotes.api.mapper.NoteMapper;
 import com.enotes.api.model.Note;
+import com.enotes.api.model.User;
 import com.enotes.api.repository.NoteRepository;
+import com.enotes.api.repository.UserRepository;
+import com.enotes.api.service.AuthService;
 import com.enotes.api.service.NoteService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,29 +26,49 @@ import lombok.RequiredArgsConstructor;
 public class NoteServiceImpl implements NoteService
 {
 	private final NoteRepository noteRepository;
+	private final UserRepository userRepository;
+	private final AuthService authService;
+
+	// This ensures that only notes owned by the logged-in user can be fetched.
+	private Note getNoteIfOwned(Long noteId, User currentUser)
+	{
+		return noteRepository.findByIdAndUserAndDeletedFalse(noteId, currentUser)
+				.orElseThrow(() -> new ResourceNotFoundException("Note", "id", noteId));
+	}
 
 	@Override
-	public NoteResponseDto createNote(NoteRequestDto noteDto)
+	public NoteResponseDto createNote(NoteRequestDto request)
 	{
-		Note saved = noteRepository.save(NoteMapper.toEntity(noteDto));
+		User currentUser = authService.getCurrentUser();
+
+		Note note = Note.builder()
+				.title(request.getTitle())
+				.content(request.getContent())
+				.user(currentUser)
+				.build();
+		Note saved = noteRepository.save(note);
+
 		return NoteMapper.toResponse(saved);
 	}
 
 	@Override
 	public List<NoteResponseDto> getAllNotes()
 	{
-		return noteRepository.findAllByIsArchivedFalse()
-				.stream()
-				.map(NoteMapper::toResponse)
-				.toList();
+		User currentUser = authService.getCurrentUser();
+
+		List<Note> notes = noteRepository.findByUserAndIsArchivedFalse(currentUser);
+
+		return notes.stream().map(NoteMapper::toResponse).toList();
 	}
 
 	@Override
 	public PageResponse<NoteResponseDto> getNotesPages(int page, int size)
 	{
 		Pageable pageable = PageRequest.of(page, size);
+		User currentUser = authService.getCurrentUser();
 
-		Page<Note> notePage = noteRepository.findAllByIsArchivedFalse(pageable);
+		Page<Note> notePage = noteRepository.findByUserAndIsArchivedFalse(currentUser,
+				pageable);
 		Page<NoteResponseDto> dtoPage = notePage.map(NoteMapper::toResponse);
 
 		return PageResponse.of(dtoPage);
@@ -54,8 +77,9 @@ public class NoteServiceImpl implements NoteService
 	@Override
 	public NoteResponseDto archiveNote(Long id)
 	{
-		Note note = noteRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Note not found"));
+		User currentUser = authService.getCurrentUser();
+		Note note = getNoteIfOwned(id, currentUser);
+
 		note.setArchived(true);
 		Note updated = noteRepository.save(note);
 
@@ -65,8 +89,9 @@ public class NoteServiceImpl implements NoteService
 	@Override
 	public NoteResponseDto unArchiveNote(Long id)
 	{
-		Note note = noteRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Note not found"));
+		User currentUser = authService.getCurrentUser();
+		Note note = getNoteIfOwned(id, currentUser);
+
 		note.setArchived(false);
 		Note updated = noteRepository.save(note);
 
@@ -84,9 +109,9 @@ public class NoteServiceImpl implements NoteService
 	@Override
 	public NoteResponseDto updateNote(Long id, NoteRequestDto requestDto)
 	{
-		Note note = noteRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(
-						"Note not found with id " + id));
+		User currentUser = authService.getCurrentUser();
+		Note note = getNoteIfOwned(id, currentUser);
+
 		if (note.isArchived())
 		{
 			throw new IllegalStateException("Can't update an archived note");
@@ -103,9 +128,8 @@ public class NoteServiceImpl implements NoteService
 	@Override
 	public void deleteNote(Long id)
 	{
-		Note note = noteRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(
-						"Note not found with id " + id));
+		User currentUser = authService.getCurrentUser();
+		Note note = getNoteIfOwned(id, currentUser);
 
 		if (note.isArchived())
 		{
@@ -114,6 +138,15 @@ public class NoteServiceImpl implements NoteService
 		}
 
 		noteRepository.delete(note);
+	}
+
+	@Override
+	public NoteResponseDto getNoteById(Long noteId)
+	{
+		User currentUser = authService.getCurrentUser();
+		Note note = getNoteIfOwned(noteId, currentUser);
+
+		return NoteMapper.toResponse(note);
 	}
 
 }

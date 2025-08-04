@@ -1,5 +1,6 @@
 package com.enotes.api.service.impl;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,15 @@ public class AuthServiceImpl implements AuthService
 		String token = jwtUtil.generateToken(request.getEmail());
 
 		return AuthResponse.builder().token(token).message("Login successful").build();
+	}
+
+	@Override
+	public User getCurrentUser()
+	{
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		return userRepository.findByEmail(email)
+				.orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
 	}
 
 }

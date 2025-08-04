@@ -62,3 +62,20 @@ POST localhost:8080/api/auth/login
 
 GET localhost:8080/api/notes
 Authorization Bearer token
+
+# get note by id
+GET localhost:8080/api/notes/3
+Authorization Bearer token
+
+# Secure & RESTful API Structure
+| Method   | Endpoint                    | Purpose                  |
+| -------- | --------------------------- | ------------------------ |
+| `GET`    | `/api/notes`                | All notes (current user) |
+| `GET`    | `/api/notes/{id}`           | ✅ Fetch one note         |
+| `POST`   | `/api/notes`                | Create note              |
+| `PUT`    | `/api/notes/{id}`           | Update note              |
+| `DELETE` | `/api/notes/{id}`           | Delete note              |
+| `PUT`    | `/api/notes/{id}/archive`   | Archive note             |
+| `PUT`    | `/api/notes/{id}/unarchive` | Unarchive note           |
+| `GET`    | `/api/notes/archived`       | Archived notes           |
+
