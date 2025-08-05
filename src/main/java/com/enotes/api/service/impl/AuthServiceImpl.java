@@ -8,6 +8,7 @@ import com.enotes.api.dto.auth.AuthResponse;
 import com.enotes.api.dto.auth.LoginRequest;
 import com.enotes.api.dto.auth.UserRegisterRequest;
 import com.enotes.api.exception.ResourceNotFoundException;
+import com.enotes.api.model.Role;
 import com.enotes.api.model.User;
 import com.enotes.api.repository.UserRepository;
 import com.enotes.api.service.AuthService;
@@ -35,7 +36,8 @@ public class AuthServiceImpl implements AuthService
 				.fullName(request.getFullName())
 				.email(request.getEmail())
 				.password(passwordEncoder.encode(request.getPassword()))
-				.role("USER")
+				.role(Role.USER)
+				.enabled(true)
 				.build();
 
 		userRepository.save(user);
