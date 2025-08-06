@@ -97,3 +97,24 @@ Permanently delete it:
 DELETE /api/notes/{id}/permanent
 
 Check the DB: that note should be gone from the table.
+
+# Login as your admin
+POST /api/auth/register
+{
+  "fullName": "Admin User",
+  "email": "admin@example.com",
+  "password": "admin123",
+  "role": "ADMIN"
+}
+Login as your admin
+POST /api/auth/login
+{
+  "email": "admin@enotes.com",
+  "password": "Admin@123"
+}
+Copy the returned JWT token.
+GET /api/admin/users
+
+Retry accessing /api/admin/users with:
+Regular user token
+should return 403
