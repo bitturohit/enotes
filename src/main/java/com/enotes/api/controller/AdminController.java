@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/admin")
-public class UserController
+public class AdminController
 {
 	private final UserRepository userRepository;
 
@@ -34,5 +34,15 @@ public class UserController
 
 		return ResponseEntity
 				.ok(ApiResponse.success(responseList, "All users fetched by admin"));
+	}
+
+	@GetMapping("/stats")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<ApiResponse<String>> getAdminStats()
+	{
+		String stats = "Total users: " + userRepository.count();
+
+		return ResponseEntity
+				.ok(ApiResponse.success(stats, "Admin stats fetched successfully"));
 	}
 }

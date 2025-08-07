@@ -17,4 +17,5 @@ public class UserResponseDto
 	private String fullName;
 	private String email;
 	private Role role;
+	private boolean enabled;
 }

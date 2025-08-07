@@ -118,3 +118,11 @@ GET /api/admin/users
 Retry accessing /api/admin/users with:
 Regular user token
 should return 403
+
+# total user from admin stats
+login as admin:
+	POST localhost:8080/api/auth/login
+copy auth token
+localhost:8080/api/admin/stats
+
+try from normal user should get 403
